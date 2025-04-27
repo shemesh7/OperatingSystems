@@ -1,0 +1,15 @@
+Gladiator process started. 42319:
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 600
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 500
+Facing opponent 3... Taking 50 damage
+Are you not entertained? Remaining health: 450
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 250
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 150
+Facing opponent 3... Taking 50 damage
+Are you not entertained? Remaining health: 100
+Facing opponent 2... Taking 200 damage
+The gladiator has fallen... Final health: -100
