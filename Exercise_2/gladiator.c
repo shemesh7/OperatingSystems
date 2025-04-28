@@ -43,9 +43,9 @@ int main(int argc, char* argv[]) {
 
     // Open log file
     char log_filename[20];
-    strncpy(log_filename, gladiator_file, 2);   // Copy "Gi"
-    log_filename[2] = '\0';                     // End the string
-    strcat(log_filename, "_log.txt");           // Add "_log.txt"
+    strncpy(log_filename, gladiator_file, 2);   // copy only "Gi" without ".txt"
+    log_filename[2] = '\0';
+    strcat(log_filename, "_log.txt");
 
     FILE *logFile = fopen(log_filename, "w");
     if (!logFile) {
