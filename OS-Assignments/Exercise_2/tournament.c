@@ -16,12 +16,12 @@ int main() {
         pid_arr[i] = fork();
         if (pid_arr[i] < 0) {
             perror("fork failed");
-            exit(1);
+            exit(EXIT_FAILURE);
         }
-        if (pid_arr[i] == 0) { // Child process
+        if (pid_arr[i] == 0) {                      // Child process
             execl("./gladiator", "gladiator", gladiator_files[i], (char*)NULL);
             perror("exec failed");
-            exit(1);
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -29,10 +29,11 @@ int main() {
     pid_t last_gladiator = 0;
     for (i = 0; i < NUM_GLADIATORS; i++) {
         pid_t ended_pid = wait(&status);
-        last_gladiator = ended_pid; // Save last ended process
+        if (ended_pid == -1)
+            exit(EXIT_FAILURE);                    // wait failed
+        last_gladiator = ended_pid;
     }
 
-    // Find which gladiator had the last_gladiator
     for (i = 0; i < NUM_GLADIATORS; i++) {
         if (pid_arr[i] == last_gladiator) {
             printf("The gods have spoken, the winner of the tournament is %s!\n", gladiator_names[i]);
