@@ -13,7 +13,7 @@ void read_option(int data_fd, int results_fd, int start, int end);
 void write_option(int data_fd, int offset, char* text);
 
 
-int main(int argc,char** argv[]) {
+int main(int argc, char **argv) {
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <data.txt> <requests.txt>\n", argv[0]);
         exit(1);
@@ -65,15 +65,6 @@ int main(int argc,char** argv[]) {
     fclose(requests_file);
     return 0;
 }
-
-/**
- * check edge cases:
- * ✅ Reading beyond file size → Prevent it with boundary checks, and continue to the next line (dont exit).
- * ✅ Writing beyond file size → Same as reading, if I give you the offset of the end of the file it's ok (but after that it's not)
- *      so is offset 0 (but before that it's not).
- * ✅ Other things → You dont need to worry about integer overflow and `start > end` in the reading.
- * 
- **/
 
 void read_option (int data_fd, int results_fd, int start, int end) {
     int data_size = lseek(data_fd, 0, SEEK_END);
