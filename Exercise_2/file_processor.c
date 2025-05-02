@@ -8,7 +8,7 @@
 #define LINE_LEN 1024
 #define BUF_SIZE 2048
 
-// probably make functions for all edge cases 
+
 void read_option(int data_fd, int results_fd, int start, int end);
 void write_option(int data_fd, int offset, char* text);
 
