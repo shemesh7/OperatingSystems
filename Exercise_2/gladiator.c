@@ -41,7 +41,6 @@ int main(int argc, char* argv[]) {
     fscanf(file, "%d, %d, %d, %d, %d", &health, &attack, &opponents[0], &opponents[1], &opponents[2]);
     fclose(file);
 
-    // Open log file
     char log_filename[20];
     strncpy(log_filename, gladiator_file, 2);   // copy only "Gi" without ".txt"
     log_filename[2] = '\0';

@@ -1,4 +1,94 @@
-Gladiator process started. 49188:
+Gladiator process started. 8973:
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 9800
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 9700
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 9400
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 9200
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 9100
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 8800
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 8600
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 8500
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 8200
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 8000
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 7900
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 7600
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 7400
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 7300
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 7000
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 6800
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 6700
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 6400
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 6200
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 6100
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 5800
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 5600
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 5500
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 5200
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 5000
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 4900
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 4600
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 4400
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 4300
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 4000
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 3800
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 3700
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 3400
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 3200
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 3100
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 2800
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 2600
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 2500
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 2200
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 2000
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 1900
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 1600
+Facing opponent 2... Taking 200 damage
+Are you not entertained? Remaining health: 1400
+Facing opponent 1... Taking 100 damage
+Are you not entertained? Remaining health: 1300
+Facing opponent 4... Taking 300 damage
+Are you not entertained? Remaining health: 1000
 Facing opponent 2... Taking 200 damage
 Are you not entertained? Remaining health: 800
 Facing opponent 1... Taking 100 damage
