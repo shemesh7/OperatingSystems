@@ -21,13 +21,13 @@ int main(int argc, char **argv) {
     
     int data_fd = open(argv[1], O_RDWR);
     if (data_fd < 0) {
-        perror("data file");
+        perror("data.txt");
         exit(1);
     }
 
     int requests_fd = open(argv[2], O_RDONLY);
     if (requests_fd < 0) {
-        perror("requests file");
+        perror("requests.txt");
         exit(1);
     }
 
