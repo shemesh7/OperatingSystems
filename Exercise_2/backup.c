@@ -1,4 +1,3 @@
-/**
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,10 +5,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
-#include <time.h>
 
-void backup_file(const char* source, const char* destination);
-void create_backup_dir(const char* path);
+void backup(const char* source, const char* destination);
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -20,23 +17,18 @@ int main(int argc, char *argv[]) {
     char *source_dir = argv[1];
     char *backup_dir = argv[2];
 
-    // Create backup directory if it doesn't exist
-    create_backup_dir(backup_dir);
-    
-    // Perform backup
-    backup_file(source_dir, backup_dir);
+    // create backup directory if it doesn't exist
+    struct stat st = {0};
+    if (stat(backup_dir, &st) == -1) {
+        mkdir(backup_dir, 0744);
+    }
+
+    backup(source_dir, backup_dir);
 
     return 0;
 }
 
-void create_backup_dir(const char* path) {
-    struct stat st = {0};
-    if (stat(path, &st) == -1) {
-        mkdir(path, 0700);
-    }
-}
-
-void backup_file(const char* source, const char* destination) {
+void backup(const char* source, const char* destination) {
     DIR *dir;
     struct dirent *entry;
     char src_path[1024];
@@ -44,33 +36,40 @@ void backup_file(const char* source, const char* destination) {
     
     dir = opendir(source);
     if (dir == NULL) {
-        perror("Unable to open directory");
+        perror("Unable to open source directory");
         return;
     }
 
     while ((entry = readdir(dir)) != NULL) {
-        if (entry->d_type == DT_REG) { // If regular file
+        if (entry->d_type == DT_REG) { // if source is regular file
             snprintf(src_path, sizeof(src_path), "%s/%s", source, entry->d_name);
             snprintf(dst_path, sizeof(dst_path), "%s/%s", destination, entry->d_name);
             
-            // Copy file
-            FILE *src = fopen(src_path, "rb");
-            FILE *dst = fopen(dst_path, "wb");
-            
-            if (src && dst) {
-                char buffer[4096];
-                size_t bytes;
-                
-                while ((bytes = fread(buffer, 1, sizeof(buffer), src)) > 0) {
-                    fwrite(buffer, 1, bytes, dst);
-                }
-                
-                fclose(src);
-                fclose(dst);
+            // create hard link
+            if (link(src_path, dst_path) != 0) {
+                perror("Failed to create hard link");
+            }
+        }
+        else if (entry->d_type == DT_DIR) {
+            // go deeper into the directory
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+                continue; // skip current and parent directory
+            }
+
+            snprintf(src_path, sizeof(src_path), "%s/%s", source, entry->d_name);
+            snprintf(dst_path, sizeof(dst_path), "%s/%s", destination, entry->d_name);
+            // call backup_file recursively
+            backup(src_path, dst_path);
+        }
+        else if (entry->d_type == DT_LNK) {
+            // if there is a symbolic link, create a symbolic link in the backup directory
+            snprintf(src_path, sizeof(src_path), "%s/%s", source, entry->d_name);
+            snprintf(dst_path, sizeof(dst_path), "%s/%s", destination, entry->d_name);
+            if (symlink(src_path, dst_path) != 0) {
+                perror("Failed to create symbolic link");
             }
         }
     }
     
     closedir(dir);
 }
-**/
