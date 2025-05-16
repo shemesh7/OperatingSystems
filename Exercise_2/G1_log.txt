@@ -1,3 +1,0 @@
-Gladiator process started. 8971:
-Facing opponent 3... Taking 5000 damage
-The gladiator has fallen... Final health: -3500
