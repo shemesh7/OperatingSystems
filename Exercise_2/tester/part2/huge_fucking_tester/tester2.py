@@ -2,13 +2,15 @@ import json
 import subprocess
 
 FILE_NAME = 'tests.json'
-PROGRAM_NAME1 = './noa_file_processor'
+PROGRAM_NAME1 = './correct_file_processor'
 PROGRAM_NAME2 = './file_processor'
 all_passed = True
+num_passed = 0
+
 def show_diff(liel, noa, label):
-    print(f"\n--- liel output of {label}:")
+    print(f"\n--- your output of {label}:")
     print(liel)
-    print(f"\n+++  noa output of {label}:")
+    print(f"\n+++  correct output of {label}:")
     print(noa)
 
 with open(FILE_NAME) as f:
@@ -41,6 +43,7 @@ for test_index, test in enumerate(tests, start=1):
 
     if data_match and results_match:
         print(f"✅ Test {test_index} passed")
+        num_passed += 1
     else:
         all_passed = False
         print(f"\n❌ Test {test_index} failed")
@@ -62,4 +65,7 @@ if all_passed:
 /'\_   _/`\
 \___)=(___/
 """)
+
+else:
+    print(f"you have passed {num_passed}/3096 tests.")
     
