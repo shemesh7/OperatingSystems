@@ -159,11 +159,11 @@ Process parseProcess(const char* line) {
     char *save_ptr;  // keep original pointer for free
     save_ptr = dup;
 
-    strcpy(process.name, strtok_r(dup, ",", &save_ptr));
-    strcpy(process.description, strtok_r(dup, ",", &save_ptr));
-    process.arrival_time = atoi(strtok_r(dup, ",", &save_ptr));
-    process.burst_time = atoi(strtok_r(dup, ",", &save_ptr));
-    process.priority = atoi(strtok_r(dup, ",", &save_ptr));
+    strcpy(process.name, strtok_r(dup, ",", &dup));
+    strcpy(process.description, strtok_r(dup, ",", &dup));
+    process.arrival_time = atoi(strtok_r(dup, ",", &dup));
+    process.burst_time = atoi(strtok_r(dup, ",", &dup));
+    process.priority = atoi(strtok_r(dup, ",", &dup));
     // the index will be initialized outside this function
 
     free(save_ptr);
