@@ -62,12 +62,13 @@ Process parseProcess(const char* line);
 void sigalarmIgnore();
 int cmpFCFS(Process p1, Process p2);
 int cmpLowerPriority(Process p1, Process p2);
-int cmpSJF(Process p1, Process p2);
-int cmpRR(Process p1, Process p2);
-void Enqueue(ReadyQueue* queue, Process item);
-Process Dequeue(ReadyQueue* queue);
+int cmpBurstTime(Process p1, Process p2);
+int cmpArrival(Process p1, Process p2);
+void Enqueue(ReadyQueue* q, Process p);
+Process Dequeue(ReadyQueue* q);
 int GetTotalTime(struct timespec starting);
 void RunScheduler(Scheduler scheduler, Process procs[], int count);
+void SortProcs (Process procs[], int count, int  (cmpProcs) (Process p1, Process p2));
 
 
 /**
@@ -92,7 +93,7 @@ void runCPUScheduler(char* processesCsvFilePath, int timeQuantum) {
     // SJF scheduler
     Scheduler SJF;
     SJF.name = "SJF";
-    SJF.CmpProcs = cmpSJF;
+    SJF.CmpProcs = cmpBurstTime;
     SJF.CalculateTurnAround = false;        // print total wait instead
     SJF.timeQuantum = -1;                   //not relevant for this scheduler
     RunScheduler(SJF, procs, count);
@@ -108,7 +109,7 @@ void runCPUScheduler(char* processesCsvFilePath, int timeQuantum) {
     // Round Robin scheduler
     Scheduler RoundRobin;
     RoundRobin.name = "Round Robin";
-    RoundRobin.CmpProcs = cmpRR;
+    RoundRobin.CmpProcs = cmpArrival;
     RoundRobin.CalculateTurnAround = true;
     RoundRobin.timeQuantum = timeQuantum;
 }
@@ -140,17 +141,7 @@ void parseCSV(char* FilePath, Process* P, int * count) {
         perror("fscanf error");
         exit(1);
     }
-
-    // sort the processes by arrival time using bubble sort
-    for (int i = 0; i < *count; i++) {
-        for (int j = 0; j < *count; j++) {
-            if (P[j].arrival_time > P[j+1].arrival_time) { // swap
-                Process temp = P[j];
-                P[j] = P[j+1];
-                P[j+1] = temp;
-            }
-        }
-    }
+    SortProcs(P, *count, cmpArrival);
 }
 
 
@@ -193,11 +184,18 @@ void RunScheduler(Scheduler scheduler, Process procs[], int count) {
     printf(INTRO, scheduler.name);
     fflush(stdout);
 
+    // start timer
     struct timespec startT;
     clock_gettime(CLOCK_MONOTONIC, &startT);
+
     /**
-     * NEED TO CONTINUE
+     * Main loop: enqueue new arrivals and check if the current process is done
      */
+     int starting = 0;
+     Process currProc;
+     bool isRunning = false;
+     bool isIdle = false;
+
 }
 
 int GetTotalTime(struct timespec starting) {
@@ -206,16 +204,57 @@ int GetTotalTime(struct timespec starting) {
     return (int) (current.tv_sec - starting.tv_sec);
 }
 
+void Enqueue(ReadyQueue* q, Process p) {
+    q->procs[q->size] = p;
+    q->size++;
+    SortProcs(q->procs, q->size, q->CmpProcs);  // re-sort
+}
+
+Process Dequeue(ReadyQueue* q) {
+    if (q->size == 0) {
+        perror("queue is empty");
+        exit(1);
+    }
+    Process first = q->procs[0];
+    q->size--;
+    for (int i = 0; i < q->size; i++)
+        q->procs[i] = q->procs[i+1];
+
+    return first;
+}
+
+void EnqueueNewArrivals(ReadyQueue* queue, Process procs[], int* startIndex, int count, struct timespec startingTime) {
+    int current = (int)GetTotalTime(startingTime);
+    // add to ready queue
+    for (; *startIndex < count; (*startIndex)++) {
+        if (procs[*startIndex].arrival_time <= current)
+            Enqueue(queue, procs[*startIndex]);
+        else break;
+    }
+}
+
+void SortProcs (Process procs[], int count, int  (cmpProcs) (Process p1, Process p2)) {
+    for (int i = 0; i < count; i++) {
+        for (int j = 0; j < count; j++) {
+            if (cmpProcs(procs[j], procs[j+1]) > 0) { // swap
+                Process temp = procs[j];
+                procs[j] = procs[j+1];
+                procs[j+1] = temp;
+            }
+        }
+    }
+}
+
+
 int cmpFCFS(Process p1, Process p2) {
     return 0;
 }
-
 int cmpLowerPriority(Process p1, Process p2) {
     return p1.priority - p2.priority;
 }
-int cmpSJF(Process p1, Process p2) {
+int cmpBurstTime(Process p1, Process p2) {
     return p1.burst_time - p2.burst_time;
 }
-int cmpRR(Process p1, Process p2) {
+int cmpArrival(Process p1, Process p2) {
     return p1.arrival_time - p2.arrival_time;
 }
