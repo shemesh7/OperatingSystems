@@ -116,6 +116,7 @@ void runCPUScheduler(char* processesCsvFilePath, int timeQuantum) {
     RoundRobin.CmpProcs = cmpArrival;
     RoundRobin.CalculateTurnAround = true;
     RoundRobin.timeQuantum = timeQuantum;
+    RunScheduler(RoundRobin, procs, count);
 }
 
 
@@ -133,10 +134,10 @@ void parseCSV(char* FilePath, Process* P, int * count) {
     }
     // parse every process, line by line
     char L[MAX_LINE];
-    while (fscanf(file, "%[^\n]%*c", L) == 1) {
-        Process proc = parseProcess(L);
-        proc.index = *count;
-        P[*count] = proc;
+    while (fgets(L, MAX_LINE, file) != NULL) {
+        sscanf(L, "%[^,],%[^,],%d,%d,%d", P[*count].name, P[*count].description, &P[*count].arrival_time,
+               &P[*count].burst_time, &P[*count].priority);
+        P[*count].index = *count;
         (*count)++;
     }
     if (ferror(file)) {
@@ -159,11 +160,11 @@ Process parseProcess(const char* line) {
     char *save_ptr;  // keep original pointer for free
     save_ptr = dup;
 
-    strcpy(process.name, strtok_r(dup, ",", &dup));
-    strcpy(process.description, strtok_r(dup, ",", &dup));
-    process.arrival_time = atoi(strtok_r(dup, ",", &dup));
-    process.burst_time = atoi(strtok_r(dup, ",", &dup));
-    process.priority = atoi(strtok_r(dup, ",", &dup));
+    strcpy(process.name, strtok_r(dup, ",", &save_ptr));
+    strcpy(process.description, strtok_r(dup, ",", &save_ptr));
+    process.arrival_time = atoi(strtok_r(dup, ",", &save_ptr));
+    process.burst_time = atoi(strtok_r(dup, ",", &save_ptr));
+    process.priority = atoi(strtok_r(dup, ",", &save_ptr));
     // the index will be initialized outside this function
 
     free(save_ptr);
@@ -231,7 +232,7 @@ void RunScheduler(Scheduler scheduler, Process procs[], int count) {
                     totalWaiting += schedulerUptime - scheduler.timeQuantum - currProc.arrival_time;
                     isRunning = false;
 
-                    printf(RUNNING_MSG, schedulerUptime - scheduler.timeQuantum, schedulerUptime, scheduler.name, currProc.description);
+                    printf(RUNNING_MSG, schedulerUptime - scheduler.timeQuantum, schedulerUptime, currProc.name, currProc.description);
                     fflush(stdout);
 
                     Process modifiedProcess = currProc;

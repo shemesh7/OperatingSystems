@@ -8,6 +8,25 @@
 #define PICKUP_SIGNAL SIGUSR2     // Signal for delivery reminder  
 #define DOORBELL_SIGNAL SIGTERM     // Signal for doorbell
 
+#define PENDING_MSG "──────────────────────────────────────────────\n" \
+"        Checking pending distractions...      \n"                     \
+"──────────────────────────────────────────────\n"
+
+#define BACK_TO_FOCUS "──────────────────────────────────────────────\n" \
+"             Back to Focus Mode.              \n" \
+"══════════════════════════════════════════════\n"
+
+#define FOCUS_ROUND "══════════════════════════════════════════════\n" \
+"                Focus Round %d                \n" \
+"──────────────────────────────────────────────\n"
+
+#define SIMULATE_OPTIONS "\nSimulate a distraction:\n" \
+"  1 = Email notification\n" \
+"  2 = Reminder to pick up delivery\n" \
+"  3 = Doorbell Ringing\n" \
+"  q = Quit\n" \
+">> "
+
 // signal handlers won't be called during focus time so can be empty
 void email_handler(int sig) {}
 void delivery_handler(int sig) {}
@@ -31,6 +50,7 @@ void runFocusMode(int numOfRounds, int roundDuration) {
     sigaddset(&block_set, DOORBELL_SIGNAL);
 
     printf("Entering Focus Mode. All distractions are blocked.\n");
+    fflush(stdout);
 
     // block them
     sigprocmask(SIG_BLOCK, &block_set, NULL);
@@ -41,7 +61,8 @@ void runFocusMode(int numOfRounds, int roundDuration) {
 
     // Unblock signals
     sigprocmask(SIG_UNBLOCK, &block_set, NULL);
-    printf("\nFocus Mode complete. All distractions are now unblocked.");
+    printf("\nFocus Mode complete. All distractions are now unblocked.\n");
+    fflush(stdout);
 }
 
 
@@ -69,9 +90,8 @@ void setup_signal_handlers() {
 
 
 void handle_pending_distractions() {
-    printf("──────────────────────────────────────────────\n");
-    printf("        Checking pending distractions...      \n");
-    printf("──────────────────────────────────────────────\n");
+    printf(PENDING_MSG);
+    fflush(stdout);
 
     sigset_t pending_set;
     sigpending(&pending_set);
@@ -81,24 +101,31 @@ void handle_pending_distractions() {
     // check signals in order
     if (sigismember(&pending_set, EMAIL_SIGNAL)) {
         printf(" - Email notification is waiting.\n");
+        fflush(stdout);
         printf("[Outcome:] The TA announced: Everyone get 100 on the exercise!\n");
+        fflush(stdout);
         distraction_found = 1;
     }
 
     if (sigismember(&pending_set, PICKUP_SIGNAL)) {
         printf(" - You have a reminder to pick up your delivery.\n");
+        fflush(stdout);
         printf("[Outcome:] You picked it up just in time.\n");
+        fflush(stdout);
         distraction_found = 1;
     }
 
     if (sigismember(&pending_set, DOORBELL_SIGNAL)) {
         printf(" - The doorbell is ringing.\n");
+        fflush(stdout);
         printf("[Outcome:] Food delivery is here.\n");
+        fflush(stdout);
         distraction_found = 1;
     }
 
     if (!distraction_found) {
         printf("No distractions reached you this round.\n");
+        fflush(stdout);
     }
 
     // free the pending signals
@@ -106,9 +133,8 @@ void handle_pending_distractions() {
     sigemptyset(&empty);
     sigprocmask(SIG_SETMASK, &empty, NULL);
 
-    printf("──────────────────────────────────────────────\n");
-    printf("             Back to Focus Mode.              \n");
-    printf("══════════════════════════════════════════════\n");
+    printf(BACK_TO_FOCUS);
+    fflush(stdout);
 
     // block the 3 distraction signals again
     sigset_t block_set;
@@ -121,18 +147,12 @@ void handle_pending_distractions() {
 
 // a single focus round
 void run_focus_round(int round_number, int duration) {
-    printf("══════════════════════════════════════════════\n");
-    printf("                Focus Round %d                \n", round_number);
-    printf("──────────────────────────────────────────────\n");
+    printf(FOCUS_ROUND, round_number);
+    fflush(stdout);
 
     for (int i = 0; i < duration; i++) {
-        printf("\nSimulate a distraction:\n");
-        printf("  1 = Email notification\n");
-        printf("  2 = Reminder to pick up delivery\n");
-        printf("  3 = Doorbell Ringing\n");
-        printf("  q = Quit\n");
-        printf(">> ");
-        fflush(stdout);         // to make sure it's printed now
+        printf(SIMULATE_OPTIONS);
+        fflush(stdout);
 
         char user_input[10];
         if (fgets(user_input, sizeof(user_input), stdin) != NULL) {
