@@ -55,13 +55,12 @@ void runFocusMode(int numOfRounds, int roundDuration) {
     // block them
     sigprocmask(SIG_BLOCK, &block_set, NULL);
 
-    for (int r = 1; r <= numOfRounds; r++) {
+    for (int r = 1; r <= numOfRounds; r++)
         run_focus_round(r, roundDuration);
-    }
 
     // Unblock signals
     sigprocmask(SIG_UNBLOCK, &block_set, NULL);
-    printf("\nFocus Mode complete. All distractions are now unblocked.\n");
+    printf("\nFocus Mode complete. All distractions are now unblocked.");
     fflush(stdout);
 }
 
@@ -94,6 +93,7 @@ void handle_pending_distractions() {
     fflush(stdout);
 
     sigset_t pending_set;
+    sigemptyset(&pending_set);
     sigpending(&pending_set);
 
     int distraction_found = 0;
