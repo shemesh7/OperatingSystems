@@ -60,7 +60,7 @@ void runFocusMode(int numOfRounds, int roundDuration) {
 
     // Unblock signals
     sigprocmask(SIG_UNBLOCK, &block_set, NULL);
-    printf("\nFocus Mode complete. All distractions are now unblocked.");
+    printf("\nFocus Mode complete. All distractions are now unblocked.\n");
     fflush(stdout);
 }
 
@@ -154,25 +154,21 @@ void run_focus_round(int round_number, int duration) {
         printf(SIMULATE_OPTIONS);
         fflush(stdout);
 
-        char user_input[10];
-        if (fgets(user_input, sizeof(user_input), stdin) != NULL) {
-            // remove newline
-            user_input[strcspn(user_input, "\n")] = 0;
-
-            if (strcmp(user_input, "q") == 0) {         //quit
-                break;
-            }
-            else if (strcmp(user_input, "1") == 0) {    //email
-                kill(getpid(), EMAIL_SIGNAL);
-            }
-            else if (strcmp(user_input, "2") == 0) {    //pickup
-                kill(getpid(), PICKUP_SIGNAL);
-            }
-            else if (strcmp(user_input, "3") == 0) {    //doorbell
-                kill(getpid(), DOORBELL_SIGNAL);
-            }
-            // ignore invalid input
+        char user_input;
+        scanf(" %c", &user_input);
+        if (user_input == 'q') {         //quit
+            break;
         }
+        else if (user_input == '1') {    //email
+            kill(getpid(), EMAIL_SIGNAL);
+        }
+        else if (user_input == '2') {    //pickup
+            kill(getpid(), PICKUP_SIGNAL);
+        }
+        else if (user_input == '3') {    //doorbell
+            kill(getpid(), DOORBELL_SIGNAL);
+        }
+        // ignore invalid input
     }
     handle_pending_distractions();
 }
