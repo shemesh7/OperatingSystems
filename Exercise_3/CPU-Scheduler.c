@@ -238,6 +238,8 @@ void RunScheduler(Scheduler scheduler, Process procs[], int count) {
                     Process modifiedProcess = currProc;
                     modifiedProcess.arrival_time = schedulerUptime;
                     modifiedProcess.burst_time -= scheduler.timeQuantum;
+                    // Give the process that finished its time quantum priority over new arrivals by setting its index to a negative value based on its original index
+                    modifiedProcess.index = -(count + currProc.index);
                     Enqueue(&Q, modifiedProcess);
                 }
             }
